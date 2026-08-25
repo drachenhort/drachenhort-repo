@@ -1,0 +1,6 @@
+[submodule "addons/twitch-center"]
+	path = addons/twitch-center
+	url = https://github.com/drachenhort/twitch-center.git
+[submodule "addons/jellyfin-kodi-plex"]
+	path = addons/jellyfin-kodi-plex
+	url = https://github.com/drachenhort/jellyfin-kodi-plex.git

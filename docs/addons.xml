@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addons>
+  <addon id="script.twitch.center" name="Twitch Center" version="0.24.4" provider-name="drachenhort">
+    <requires>
+      <import addon="xbmc.python" version="3.0.0" />
+      <import addon="script.module.requests" version="2.22.0" />
+      <import addon="script.module.inputstreamhelper" version="0.4.6" />
+    </requires>
+    <extension point="xbmc.python.script" library="lib/main.py">
+      <provides>executable</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+      <summary lang="en_GB">Watch Twitch streams and chat from Kodi</summary>
+      <description lang="en_GB">
+      View Twitch streams using Kodi's own playback, with a paired IRC chat view. Not designed
+      for chatting back to streamers - a second way to consume streamer-generated content.
+    </description>
+      <platform>all</platform>
+      <license>MIT</license>
+      <source>https://github.com/drachenhort/twitch-center</source>
+      <assets>
+        <icon>icon.png</icon>
+      </assets>
+      <news>
+      v0.21.0: First step of Kick.com support (not usable yet - no UI wires it up): added
+      OAuth 2.1 PKCE login, a Kick Public API client, and stream URL resolution as an
+      internal lib/kick/ package, alongside four new hidden/advanced Settings entries
+      (Kick Client ID, Client Secret, OAuth redirect port, saved token) for a future
+      release to use. Kick login and browsing will follow in later updates.
+      v0.20.0: Removed the "standalone chat window" and "both" chat display modes - neither did
+      anything beyond what "overlay" already does ("standalone" was never implemented past a stub,
+      "both" behaved identically to "overlay"). The "Chat display mode" setting is now a single
+      "Show chat overlay while playing" toggle, defaulting on. If you had "standalone" selected
+      (previously no chat during playback), you'll now see the chat overlay by default - turn the
+      new toggle off in Settings if you don't want that.
+      v0.19.0: Version number and release date now shown in the top-left corner of the main
+      window, on every screen.
+      v0.18.0: Variable-size chat overlay is now on by default for EventSub chat (still off for
+      IRC chat, unchanged). Also fixed two bugs found during review: VariableChatOverlay's 9-line
+      message cap wasn't actually being applied (could produce oversized message blocks for very
+      long messages), and playback could silently fail to start at all if chat-overlay setup threw
+      partway through - both now fixed, with a fallback so the stream always plays.
+      v0.17.3: Live re-test of v0.17.2 found the remaining garbling wasn't a sizing issue at all -
+      it always appeared at whatever message currently sat at the column's top edge, with content
+      bleeding in from an already-evicted message. Root cause: a burst of messages arriving in one
+      throttled tick could get a control added and then immediately removed again within that same
+      call (build-then-evict-same-tick), and Kodi's addControl() appears to complete asynchronously
+      on at least one tested build, so the same-tick removal could run before the add had actually
+      taken effect - leaving an orphaned control behind. Restructured chat rendering to compute
+      eviction before creating any new controls, so a message that would be evicted immediately is
+      now never materialized as a control at all.
+      v0.17.2: Live re-test of v0.17.1's fix on kodi.local found the overlap was reduced but not
+      eliminated - a remaining ~1-line-tall graze specifically at block-to-block boundaries
+      (previous message's last line vs the next message's username), not within a message's own
+      wrapped lines. Increased _BLOCK_MARGIN (10px -&gt; 34px), the constant meant to absorb exactly
+      this kind of gap, and re-verified live.
+      v0.17.1: Fixed the new variable-size chat overlay (v0.17.0) rendering with overlapping,
+      garbled text on some Kodi builds/platforms - live testing found real text rendering taller
+      than expected on at least one device, and because each message's position is computed from
+      the height of the messages above it, that error compounded across the handful of messages
+      on screen at once. Padded the per-line/per-row height constants with a large safety margin
+      to absorb this kind of cross-build variance.
+      v0.17.0: New "Variable-size chat overlay" setting (Settings &gt; General, EventSub only) -
+      sizes each chat overlay message's box to its actual length instead of always reserving
+      space for the maximum 5-line message. Off by default; the existing fixed-box overlay
+      stays the default for both chat engines.
+      v0.16.5: Chat overlay message box was too short for the 5-line message cap - a 4th or 5th
+      wrapped line spilled past the label's bottom edge into the emote-icon row below it. Grew the
+      message box and pushed the per-item row layout (and emote icons) down to fit all 5 lines
+      cleanly.
+      v0.16.4: Fixed chat overlay message text still rendering with a blank line above it on some
+      Kodi builds even after v0.16.3 - the message label had no explicit vertical alignment, so a
+      short single-line message could render bottom/center-anchored in its box on those builds.
+      Now pinned to the top of the box explicitly.
+      v0.16.3: Fixed chat overlay messages sometimes rendering with a stray blank line above the
+      text - the skin's wrapmultiline flag conflicted with the code's own manual line-wrapping.
+      v0.16.0: New "Chat engine" setting (Settings &gt; General) - choose between the existing
+      anonymous IRC chat (default, no login needed) and Twitch's officially-supported EventSub
+      chat API (requires login; available on Live Streams and Discover tabs only). EventSub falls
+      back to IRC automatically if the channel's id can't be resolved. If the EventSub subscription
+      itself fails (e.g. a saved login predates this version's chat scope), chat stays empty and
+      keeps retrying - use the "Log in again" menu entry to refresh your login. Search results
+      don't support EventSub (unauthenticated feature) - chat won't be shown when EventSub is
+      selected for Search playback.
+      v0.15.2: Fixed chat overlay messages getting cut off mid-word - long messages now wrap
+      across lines instead of being cut off at the label's width.
+      v0.15.1: No functional change - re-deploy marker for kodi.local install.
+      v0.15.0: New landing Menu screen for navigating between Live Streams, Discover, and Search.
+      Rebuilt the whole UI on a single persistent window with toggle-able view groups instead of
+      constructing a new Kodi window per screen - this eliminates the Kodi window-activation
+      revert bug for good (Discover, Search, and re-login all previously could hit it; now
+      structurally impossible, not just less likely).
+      v0.14.1: Fixed Search crashing on open (AttributeError in onInit) - the window would flash
+      open then immediately bounce back to Home. Known issue: even fixed, Search can still hit the
+      pre-existing Kodi window-activation revert bug in some cases, same as Discover/re-login -
+      tracked separately.
+      v0.14.0: Added an addon icon - shows in Kodi's addon browser and Add-ons list instead of
+      the generic script placeholder.
+      v0.13.1: Updated window tests to match the new quit-confirmation behavior introduced in v0.13.0.
+      v0.13.0: Added a quit confirmation prompt when exiting the addon to prevent accidental closures.
+      v0.12.0: "Log in again" on Home is now always visible (was error-only) - use it to
+      re-authorize/switch accounts on demand, e.g. after using the same account on two devices.
+      Website Token field is no longer masked in Settings. Shortened the Website Token help text
+      so it renders fully on TV displays instead of getting clipped. Known issue: re-login from
+      Home can hit a pre-existing Kodi window-activation bug and silently stay on Home instead of
+      opening the login screen - tracked separately, not new in this release.
+      v0.11.1: Fixed the Website Token setting (for ad-free/subscriber-perk playback) never
+      appearing in Settings &gt; General - an empty default value made Kodi silently drop it from
+      the settings dialog. Also fixed the same bug for an internal setting. Both now show up and
+      work correctly.
+      v0.11.0: New optional "Show offline channels on Home" setting (Settings &gt; General, off by default) -
+      turn it on to bring offline followed channels back into Home's list, after the live ones.
+      v0.10.0: Chat now shows automatically as a right-side overlay while a stream plays (Settings &gt; General &gt; Chat display mode, "overlay" or "both"). Connects anonymously to Twitch IRC, auto-reconnects on drops, and closes itself when the stream stops, ends, or errors out. Standalone full-screen chat and the picture-in-picture windowed-video layout are still to come.
+      v0.9.0: Fixed window flicker and revert bug when opening Discover screen by adding a safe control delay and using xbmc.sleep(). Improved error handling for missing UI controls across Home and Discover windows.
+      v0.8.1: Fixed the real cause of "stuck on login/gets a new code every time" - Home's skin
+      defaultcontrol targeted the (empty until data loads) channel list, which made Kodi's window
+      manager silently abort activating Home and revert to Login whenever Home wasn't the very
+      first window shown in a session. No script-side fix could catch this since it happens before
+      Python even runs. Same root cause and fix as Discover's earlier "flashes then reverts" bug.
+      v0.8.0: Discover's search can now search by game/category, not just channel name - a toggle
+      button next to the search box switches modes ("Searching: Channels" / "Searching: Games").
+      Searching a game (e.g. "warships") finds the best-matching category and lists its live
+      streams.
+      v0.7.2: Fixed streams continuing to play in the background after pressing Back - Kodi's own
+      fullscreen-video Back only exits the fullscreen view, it doesn't stop playback. Home and
+      Discover's Back now stop an active stream instead of closing the whole addon out from under it.
+      v0.7.1: Added a Settings button on Home - opens Kodi's native addon settings dialog directly
+      (no more digging through Add-ons browser context menus), and reloads Home afterward so a
+      newly pasted Website Token takes effect immediately.
+      v0.7.0: New optional "Website Token" setting (Settings &gt; General) - paste your twitch.tv
+      browser session's auth-token cookie to unlock ad-free/subscriber-perk playback and get the
+      followed-games filter row actually working (it silently 401'd before, same root cause as the
+      playback bug). Leave it empty to keep the default anonymous/public behavior.
+      v0.6.5: Fixed playback always failing with "session expired": Twitch's internal GraphQL API
+      permanently rejects any real user OAuth token from a non-Twitch client_id, so no refresh
+      could ever fix it. Playback token requests are now made anonymously, which Twitch serves
+      fine for public live streams.
+      v0.6.4: Fixed Login screen restarting the device-code flow (new code shown) after a
+      successful login, when Kodi re-fires the window's init on an already-completed login.
+      v0.6.3: Token refresh failures are now logged with the actual reason (network error, HTTP
+      status, bad response body) instead of silently forcing a re-login with no diagnostic trail.
+      v0.6.2: Fixed Home's focus landing on a random button (Relogin/Discover) right after load - the
+      skin's defaultcontrol targeted the channel list before it had items, so Kodi's focus fallback
+      could pick a button; a stray keypress there would silently trigger unwanted navigation.
+      v0.6.1: Fixed login screen ending the whole script on successful login instead of continuing
+      to Home - required reopening the addon manually every time the session expired.
+      v0.6.0: Real stream playback via inputstream.adaptive; clicking a live channel in Home or
+      Discover now plays it.
+      v0.5.0: Discover screen (browse by game, channel search); fixed window navigation killing
+      the script; fixed unreachable skin controls.
+      v0.4.0: followed-games filter row on Home.
+      v0.3.0: Home screen (followed channels, thumbnails, token refresh).
+      v0.2.0: Twitch device-code login.
+      v0.1.0: initial addon scaffold.
+    </news>
+    </extension>
+  </addon>
+  <addon id="script.jellyfin.plex" name="Jellyfin (Plex-style)" version="0.3.74" provider-name="jellyfin-kodi-plex">
+    <requires>
+      <import addon="xbmc.python" version="3.0.0" />
+      <import addon="script.module.requests" version="2.22.0" />
+    </requires>
+    <extension point="xbmc.python.script" library="default.py">
+      <provides>video</provides>
+    </extension>
+    <extension point="xbmc.service" library="service.py" />
+    <extension point="xbmc.addon.metadata">
+      <summary lang="en_GB">Jellyfin client with a Plex-style interface</summary>
+      <description lang="en_GB">
+      Connects to a Jellyfin media server and presents a custom, hub-based
+      home screen, poster-wall browsing, and item detail pages modelled on
+      the Plex Web/App interface, instead of Kodi's default skin listings.
+    </description>
+      <platform>all</platform>
+      <license>MIT</license>
+      <assets>
+        <icon>icon.png</icon>
+      </assets>
+    </extension>
+  </addon>
+  <addon id="repository.drachenhort" name="drachenhort Kodi Addons" version="1.0.0" provider-name="drachenhort">
+    <extension point="xbmc.addon.repository" name="drachenhort Kodi Addons">
+      <dir>
+        <info compressed="false">https://drachenhort.github.io/drachenhort-repo/addons.xml</info>
+        <checksum>https://drachenhort.github.io/drachenhort-repo/addons.xml.md5</checksum>
+        <datadir zip="true">https://drachenhort.github.io/drachenhort-repo/</datadir>
+      </dir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+      <summary lang="en_GB">Repository for drachenhort's Kodi addons</summary>
+      <description lang="en_GB">
+      Install this once to let Kodi automatically discover and install updates
+      for Twitch Center and Jellyfin (Plex-style).
+    </description>
+      <platform>all</platform>
+      <license>MIT</license>
+      <assets>
+        <icon>icon.png</icon>
+      </assets>
+    </extension>
+  </addon>
+</addons>
