@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="Twitch Center" version="0.25.5" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="Twitch Center" version="0.26.0" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -9,6 +9,7 @@
     <extension point="xbmc.python.script" library="lib/main.py">
       <provides>executable</provides>
     </extension>
+    <extension point="xbmc.service" library="lib/live_notify_service.py" start="startup" />
     <extension point="xbmc.addon.metadata">
       <summary lang="en_GB">Watch Twitch streams and chat from Kodi</summary>
       <description lang="en_GB">
@@ -22,6 +23,11 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.26.0: Added an opt-in background notification for followed Twitch channels going live -
+      enable "Notify when followed streamers go live" in Settings. Runs as a new Kodi background
+      service (separate from the existing on-demand addon window), using one EventSub WebSocket
+      subscribed to your followed channels' stream.online events. Off by default. Twitch only for
+      now.
       v0.21.0: First step of Kick.com support (not usable yet - no UI wires it up): added
       OAuth 2.1 PKCE login, a Kick Public API client, and stream URL resolution as an
       internal lib/kick/ package, alongside four new hidden/advanced Settings entries
