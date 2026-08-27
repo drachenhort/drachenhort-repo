@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.27.2" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.27.3" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -23,6 +23,10 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.27.3: Fixed the SAME crash the v0.27.2 fix missed - the variable-height chat overlay
+      (on by default for EventSub chat) has its own separate rendering code that crashed on
+      connection-error events the same way the plain overlay used to. Confirmed live: this is
+      what was actually crashing on kodi.local, not the file v0.27.2 patched.
       v0.27.2: Chat overlay no longer silently freezes if its background thread hits an
       unexpected error (e.g. a malformed event) - now shows a "[CHAT ERROR]" message in
       the chat list itself instead of only logging to kodi.log where nobody sees it.
