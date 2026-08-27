@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.27.3" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.27.4" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -23,6 +23,10 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.27.4: Live-notify's subscribe throttle now respects Twitch's own Ratelimit-Reset
+      header on a 429 instead of a fixed 0.1s delay - confirmed live that the fixed delay
+      wasn't enough once chat's own EventSub subscription competed for the same shared
+      per-app rate-limit budget.
       v0.27.3: Fixed the SAME crash the v0.27.2 fix missed - the variable-height chat overlay
       (on by default for EventSub chat) has its own separate rendering code that crashed on
       connection-error events the same way the plain overlay used to. Confirmed live: this is
