@@ -25,8 +25,8 @@
       v0.28.2: v0.28.1's clip fix still 401'd - Twitch's clip GQL query needed a raw query
       string (a guessed persisted-query hash was rejected outright), and the returned MP4
       sourceURL needs its playbackAccessToken signature/value appended as ?sig=...&amp;token=...
-      (its CDN path 401s without it) - the same pattern as live/VOD playback. Confirmed live:
-      clips now actually play.
+      (its CDN path 401s without it) - the same pattern as live/VOD playback. Confirmed live on
+      kodi.local: clips now actually play.
       v0.28.1: Fixed Clip playback - every clip failed with "Couldn't start playback" (silently,
       no log line). Twitch dropped the old thumbnail-URL-to-MP4 naming trick clips relied on
       (clip thumbnails moved to a new CDN path with no derivable video-file name - confirmed
