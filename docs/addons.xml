@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.27.6" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.28.0" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -9,7 +9,6 @@
     <extension point="xbmc.python.script" library="lib/main.py">
       <provides>executable</provides>
     </extension>
-    <extension point="xbmc.service" library="lib/live_notify_service.py" start="startup" />
     <extension point="xbmc.addon.metadata">
       <summary lang="en_GB">Watch Twitch streams and chat from Kodi</summary>
       <description lang="en_GB">
@@ -23,6 +22,12 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.28.0: Removed the live-notify (followed-streamer "went live" notifications) feature.
+      Live-tested extensively across v0.27.1-0.27.6: even with proactive rate-limit
+      throttling, the cold-start subscribe burst for a large followed-channel list still
+      overran Twitch's per-client_id EventSub rate limit and, worse, could get Twitch to
+      close the WebSocket session outright - not worth the complexity or the risk of
+      breaking chat for a non-essential feature.
       v0.27.6: Live-notify's subscribe loop now watches Ratelimit-Remaining on every
       SUCCESSFUL response too, not just 429s - once the budget gets low it waits for the
       bucket to refill before the next call, instead of only reacting after a 429 already
