@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="Twitch Center" version="0.26.2" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.26.3" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -23,6 +23,9 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.26.3: Renamed the addon's display name from "Twitch Center" to "SIGMA Streaming Hub"
+      (internal addon id, script.twitch.center, is unchanged - no reinstall needed, this just
+      updates what Kodi shows).
       v0.26.2: Live-go notifications now also cover streamers who were already live before the
       background service connected (e.g. at Kodi startup, or right after you enable the
       setting) - EventSub only reports the transition to live, so this adds a one-off check
