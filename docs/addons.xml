@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="Twitch Center" version="0.26.0" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="Twitch Center" version="0.26.1" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -23,6 +23,11 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.26.1: Live-go notification service now logs its subscribed followed-channel list and
+      each notification it shows, plus the connect/disconnect and subscription-error diagnostics
+      that were previously only visible with Kodi debug logging on - all gated behind a new
+      "Log live-notify activity" setting (off by default) so it doesn't add log noise unless you
+      turn it on.
       v0.26.0: Added an opt-in background notification for followed Twitch channels going live -
       enable "Notify when followed streamers go live" in Settings. Runs as a new Kodi background
       service (separate from the existing on-demand addon window), using one EventSub WebSocket
