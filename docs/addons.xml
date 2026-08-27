@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.27.5" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.27.6" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -23,6 +23,12 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.27.6: Live-notify's subscribe loop now watches Ratelimit-Remaining on every
+      SUCCESSFUL response too, not just 429s - once the budget gets low it waits for the
+      bucket to refill before the next call, instead of only reacting after a 429 already
+      happened. Confirmed live: even with v0.27.5's race fix, a clean cold-start 140-channel
+      burst still 429'd on ~126 calls partway through, because the burst outran the bucket
+      before any failure could trigger the existing reactive backoff.
       v0.27.5: Fixed a startup race where live-notify's service called connect() before
       set_broadcasters() - the background thread could snapshot an empty broadcaster set and
       silently defer the real subscribe burst to run ~70s late via a catchup path, colliding
