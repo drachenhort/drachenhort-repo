@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.27.1" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.27.2" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -23,6 +23,9 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.27.2: Chat overlay no longer silently freezes if its background thread hits an
+      unexpected error (e.g. a malformed event) - now shows a "[CHAT ERROR]" message in
+      the chat list itself instead of only logging to kodi.log where nobody sees it.
       v0.27.1: Live-notify no longer subscribes your whole followed-channel list in one
       unthrottled burst - each subscription request is now spaced out, so a large follow
       list can't exhaust Twitch's shared per-app rate limit and 429 other features using
