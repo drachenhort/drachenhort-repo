@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.28.0" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.28.1" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -22,6 +22,11 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.28.1: Fixed Clip playback - every clip failed with "Couldn't start playback" (silently,
+      no log line). Twitch dropped the old thumbnail-URL-to-MP4 naming trick clips relied on
+      (clip thumbnails moved to a new CDN path with no derivable video-file name - confirmed
+      live). Clips now resolve their playable URL via Twitch's GQL VideoAccessToken_Clip query
+      instead.
       v0.28.0: Removed the live-notify (followed-streamer "went live" notifications) feature.
       Live-tested extensively across v0.27.1-0.27.6: even with proactive rate-limit
       throttling, the cold-start subscribe burst for a large followed-channel list still
