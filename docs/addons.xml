@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.28.4" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.28.7" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -22,6 +22,12 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.28.7: Grew the Live Streams channel thumbnail further and moved to 3 rows as a
+      middle ground between thumbnail size and row count.
+      v0.28.6: Grew the channel thumbnail in the Live Streams grid cards after 0.28.5
+      shrank cards to fit 4 rows.
+      v0.28.5: Live Streams grid now shows 4 rows instead of 3 (12 cards visible at once,
+      still scrollable for more).
       v0.28.4: Fixed the on-screen version label showing a stale build date from the
       previous release.
       v0.28.3: Live Streams grid now shows 3 rows instead of 2. Added a Refresh button next
