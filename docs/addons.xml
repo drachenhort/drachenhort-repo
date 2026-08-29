@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.28.3" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.28.4" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -22,6 +22,11 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.28.4: Fixed the on-screen version label showing a stale build date from the
+      previous release.
+      v0.28.3: Live Streams grid now shows 3 rows instead of 2. Added a Refresh button next
+      to the clock to re-pull followed/live status without leaving the view. Games-filter
+      pills and the Refresh button now use the same card surface art as the channel grid.
       v0.28.2: v0.28.1's clip fix still 401'd - Twitch's clip GQL query needed a raw query
       string (a guessed persisted-query hash was rejected outright), and the returned MP4
       sourceURL needs its playbackAccessToken signature/value appended as ?sig=...&amp;token=...
