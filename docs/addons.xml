@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.28.9" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.29.0" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -22,6 +22,10 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.29.0: Added "Follow raids" (Settings &gt; General, on by default) - when the streamer
+      you're watching raids out to another channel, shows a 15-second countdown prompt
+      offering to switch playback there, with a Decline option. Only works with the
+      EventSub chat engine - IRC has no way to detect an outgoing raid at all.
       v0.28.9: No functional change - corrected TODO.md's Follow raids entry (both chat
       engines already parse raid events, only the auto-switch consumer is missing) and
       dropped the picture-in-picture idea.
