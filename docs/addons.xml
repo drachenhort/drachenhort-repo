@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.29.0" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.29.1" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -22,6 +22,9 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.29.1: No functional change - confirmed kodi.local was already running v0.29.0
+      (same code as this release's tag, only TODO.md changed since), re-verified reachable
+      and responsive.
       v0.29.0: Added "Follow raids" (Settings &gt; General, on by default) - when the streamer
       you're watching raids out to another channel, shows a 15-second countdown prompt
       offering to switch playback there, with a Decline option. Only works with the
