@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.28.8" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.28.9" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -22,6 +22,9 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.28.9: No functional change - corrected TODO.md's Follow raids entry (both chat
+      engines already parse raid events, only the auto-switch consumer is missing) and
+      dropped the picture-in-picture idea.
       v0.28.8: Fixed chat overlay swallowing the player's OSD - Enter/Select now open it
       properly instead of doing nothing (or worse, looping) without needing to close chat
       first.
