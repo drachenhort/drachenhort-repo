@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.30.0" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.30.1" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -22,6 +22,11 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.30.1: Fixed the raid-follow prompt freezing silently on a live raid instead of
+      switching - its countdown thread had no exception handling, so any error inside it died
+      with zero trace (Python's uncaught-thread-exception output goes to stderr, not
+      kodi.log), leaving the dialog stuck until the original stream ended on its own.
+      Countdown failures now log and still fail safe to accepted.
       v0.29.2: Fixed the raid-follow prompt leaving the remote completely unresponsive after
       accepting a raid - it used a modal dialog (doModal()) from a background thread, which
       left Kodi's window manager stuck thinking a dialog was still open (confirmed via
