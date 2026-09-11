@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.30.3" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.30.9" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -255,7 +255,7 @@
     </news>
     </extension>
   </addon>
-  <addon id="script.jellyfin.plex" name="Jellyfin (Plex-style)" version="0.3.78" provider-name="jellyfin-kodi-plex">
+  <addon id="script.jellyfin.plex" name="Jellyfin (Plex-style)" version="0.3.79" provider-name="jellyfin-kodi-plex">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
