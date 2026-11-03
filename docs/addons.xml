@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.31.2" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.31.3" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -22,67 +22,68 @@
         <icon>icon.png</icon>
       </assets>
       <news>
-      v0.31.2: A stream that won't start now shows why (timeout, Twitch error) instead of only "Playback failed".
-      v0.31.1: Live Streams refresh shows which step is loading, e.g. "Refreshing: live status (2/4)".
-      v0.31.0: Live Streams title shows "Refreshing..." while the stream list loads.
-      v0.30.1: Fixed the raid-follow prompt freezing silently on a live raid instead of
+      v0.31.3 (2026-11-03): Every entry in this changelog now shows its release date.
+      v0.31.2 (2026-11-03): A stream that won't start now shows why (timeout, Twitch error) instead of only "Playback failed".
+      v0.31.1 (2026-10-08): Live Streams refresh shows which step is loading, e.g. "Refreshing: live status (2/4)".
+      v0.31.0 (2026-10-08): Live Streams title shows "Refreshing..." while the stream list loads.
+      v0.30.1 (2026-09-06): Fixed the raid-follow prompt freezing silently on a live raid instead of
       switching - its countdown thread had no exception handling, so any error inside it died
       with zero trace (Python's uncaught-thread-exception output goes to stderr, not
       kodi.log), leaving the dialog stuck until the original stream ended on its own.
       Countdown failures now log and still fail safe to accepted.
-      v0.29.2: Fixed the raid-follow prompt leaving the remote completely unresponsive after
+      v0.29.2 (2026-09-02): Fixed the raid-follow prompt leaving the remote completely unresponsive after
       accepting a raid - it used a modal dialog (doModal()) from a background thread, which
       left Kodi's window manager stuck thinking a dialog was still open (confirmed via
       kodi.log: every ActivateWindow request refused for 27+ minutes after the switch). Now
       uses the same non-modal show()/close() pattern the chat overlay itself already uses
       safely.
-      v0.29.1: No functional change - confirmed kodi.local was already running v0.29.0
+      v0.29.1 (2026-09-02): No functional change - confirmed kodi.local was already running v0.29.0
       (same code as this release's tag, only TODO.md changed since), re-verified reachable
       and responsive.
-      v0.29.0: Added "Follow raids" (Settings &gt; General, on by default) - when the streamer
+      v0.29.0 (2026-09-02): Added "Follow raids" (Settings &gt; General, on by default) - when the streamer
       you're watching raids out to another channel, shows a 15-second countdown prompt
       offering to switch playback there, with a Decline option. Only works with the
       EventSub chat engine - IRC has no way to detect an outgoing raid at all.
-      v0.28.9: No functional change - corrected TODO.md's Follow raids entry (both chat
+      v0.28.9 (2026-09-02): No functional change - corrected TODO.md's Follow raids entry (both chat
       engines already parse raid events, only the auto-switch consumer is missing) and
       dropped the picture-in-picture idea.
-      v0.28.8: Fixed chat overlay swallowing the player's OSD - Enter/Select now open it
+      v0.28.8 (2026-09-02): Fixed chat overlay swallowing the player's OSD - Enter/Select now open it
       properly instead of doing nothing (or worse, looping) without needing to close chat
       first.
-      v0.28.7: Grew the Live Streams channel thumbnail further and moved to 3 rows as a
+      v0.28.7 (2026-08-29): Grew the Live Streams channel thumbnail further and moved to 3 rows as a
       middle ground between thumbnail size and row count.
-      v0.28.6: Grew the channel thumbnail in the Live Streams grid cards after 0.28.5
+      v0.28.6 (2026-08-29): Grew the channel thumbnail in the Live Streams grid cards after 0.28.5
       shrank cards to fit 4 rows.
-      v0.28.5: Live Streams grid now shows 4 rows instead of 3 (12 cards visible at once,
+      v0.28.5 (2026-08-29): Live Streams grid now shows 4 rows instead of 3 (12 cards visible at once,
       still scrollable for more).
-      v0.28.4: Fixed the on-screen version label showing a stale build date from the
+      v0.28.4 (2026-08-29): Fixed the on-screen version label showing a stale build date from the
       previous release.
-      v0.28.3: Live Streams grid now shows 3 rows instead of 2. Added a Refresh button next
+      v0.28.3 (2026-08-29): Live Streams grid now shows 3 rows instead of 2. Added a Refresh button next
       to the clock to re-pull followed/live status without leaving the view. Games-filter
       pills and the Refresh button now use the same card surface art as the channel grid.
-      v0.28.2: v0.28.1's clip fix still 401'd - Twitch's clip GQL query needed a raw query
+      v0.28.2 (2026-08-27): v0.28.1's clip fix still 401'd - Twitch's clip GQL query needed a raw query
       string (a guessed persisted-query hash was rejected outright), and the returned MP4
       sourceURL needs its playbackAccessToken signature/value appended as ?sig=...&amp;token=...
       (its CDN path 401s without it) - the same pattern as live/VOD playback. Confirmed live on
       kodi.local: clips now actually play.
-      v0.28.1: Fixed Clip playback - every clip failed with "Couldn't start playback" (silently,
+      v0.28.1 (2026-08-27): Fixed Clip playback - every clip failed with "Couldn't start playback" (silently,
       no log line). Twitch dropped the old thumbnail-URL-to-MP4 naming trick clips relied on
       (clip thumbnails moved to a new CDN path with no derivable video-file name - confirmed
       live). Clips now resolve their playable URL via Twitch's GQL VideoAccessToken_Clip query
       instead.
-      v0.28.0: Removed the live-notify (followed-streamer "went live" notifications) feature.
+      v0.28.0 (2026-08-27): Removed the live-notify (followed-streamer "went live" notifications) feature.
       Live-tested extensively across v0.27.1-0.27.6: even with proactive rate-limit
       throttling, the cold-start subscribe burst for a large followed-channel list still
       overran Twitch's per-client_id EventSub rate limit and, worse, could get Twitch to
       close the WebSocket session outright - not worth the complexity or the risk of
       breaking chat for a non-essential feature.
-      v0.27.6: Live-notify's subscribe loop now watches Ratelimit-Remaining on every
+      v0.27.6 (2026-08-27): Live-notify's subscribe loop now watches Ratelimit-Remaining on every
       SUCCESSFUL response too, not just 429s - once the budget gets low it waits for the
       bucket to refill before the next call, instead of only reacting after a 429 already
       happened. Confirmed live: even with v0.27.5's race fix, a clean cold-start 140-channel
       burst still 429'd on ~126 calls partway through, because the burst outran the bucket
       before any failure could trigger the existing reactive backoff.
-      v0.27.5: Fixed a startup race where live-notify's service called connect() before
+      v0.27.5 (2026-08-27): Fixed a startup race where live-notify's service called connect() before
       set_broadcasters() - the background thread could snapshot an empty broadcaster set and
       silently defer the real subscribe burst to run ~70s late via a catchup path, colliding
       with chat's own EventSub subscribe if a stream was opened in the meantime (confirmed
@@ -90,60 +91,60 @@
       request was actually made). Now set_broadcasters() is called before connect(), and the
       first connect attempt after Kodi boot waits 30s before starting, giving a
       stream opened right at boot a better chance of not colliding with the burst.
-      v0.27.4: Live-notify's subscribe throttle now respects Twitch's own Ratelimit-Reset
+      v0.27.4 (2026-08-27): Live-notify's subscribe throttle now respects Twitch's own Ratelimit-Reset
       header on a 429 instead of a fixed 0.1s delay - confirmed live that the fixed delay
       wasn't enough once chat's own EventSub subscription competed for the same shared
       per-app rate-limit budget.
-      v0.27.3: Fixed the SAME crash the v0.27.2 fix missed - the variable-height chat overlay
+      v0.27.3 (2026-08-27): Fixed the SAME crash the v0.27.2 fix missed - the variable-height chat overlay
       (on by default for EventSub chat) has its own separate rendering code that crashed on
       connection-error events the same way the plain overlay used to. Confirmed live: this is
       what was actually crashing on kodi.local, not the file v0.27.2 patched.
-      v0.27.2: Chat overlay no longer silently freezes if its background thread hits an
+      v0.27.2 (2026-08-27): Chat overlay no longer silently freezes if its background thread hits an
       unexpected error (e.g. a malformed event) - now shows a "[CHAT ERROR]" message in
       the chat list itself instead of only logging to kodi.log where nobody sees it.
-      v0.27.1: Live-notify no longer subscribes your whole followed-channel list in one
+      v0.27.1 (2026-08-27): Live-notify no longer subscribes your whole followed-channel list in one
       unthrottled burst - each subscription request is now spaced out, so a large follow
       list can't exhaust Twitch's shared per-app rate limit and 429 other features using
       the same connection (confirmed live: this was breaking chat).
-      v0.27.0: New "VODs &amp; Clips" screen (Twitch only) - reachable from the main menu, pick any
+      v0.27.0 (2026-08-27): New "VODs &amp; Clips" screen (Twitch only) - reachable from the main menu, pick any
       followed channel and browse its past broadcasts and clips. Playback is video-only (no chat
       overlay, no ad-skip relay).
-      v0.26.3: Renamed the addon's display name from "Twitch Center" to "SIGMA Streaming Hub"
+      v0.26.3 (2026-08-27): Renamed the addon's display name from "Twitch Center" to "SIGMA Streaming Hub"
       (internal addon id, script.twitch.center, is unchanged - no reinstall needed, this just
       updates what Kodi shows).
-      v0.26.2: Live-go notifications now also cover streamers who were already live before the
+      v0.26.2 (2026-08-27): Live-go notifications now also cover streamers who were already live before the
       background service connected (e.g. at Kodi startup, or right after you enable the
       setting) - EventSub only reports the transition to live, so this adds a one-off check
       against currently-live followed channels immediately after connecting.
-      v0.26.1: Live-go notification service now logs its subscribed followed-channel list and
+      v0.26.1 (2026-08-27): Live-go notification service now logs its subscribed followed-channel list and
       each notification it shows, plus the connect/disconnect and subscription-error diagnostics
       that were previously only visible with Kodi debug logging on - all gated behind a new
       "Log live-notify activity" setting (off by default) so it doesn't add log noise unless you
       turn it on.
-      v0.26.0: Added an opt-in background notification for followed Twitch channels going live -
+      v0.26.0 (2026-08-26): Added an opt-in background notification for followed Twitch channels going live -
       enable "Notify when followed streamers go live" in Settings. Runs as a new Kodi background
       service (separate from the existing on-demand addon window), using one EventSub WebSocket
       subscribed to your followed channels' stream.online events. Off by default. Twitch only for
       now.
-      v0.21.0: First step of Kick.com support (not usable yet - no UI wires it up): added
+      v0.21.0 (2026-08-22): First step of Kick.com support (not usable yet - no UI wires it up): added
       OAuth 2.1 PKCE login, a Kick Public API client, and stream URL resolution as an
       internal lib/kick/ package, alongside four new hidden/advanced Settings entries
       (Kick Client ID, Client Secret, OAuth redirect port, saved token) for a future
       release to use. Kick login and browsing will follow in later updates.
-      v0.20.0: Removed the "standalone chat window" and "both" chat display modes - neither did
+      v0.20.0 (2026-08-22): Removed the "standalone chat window" and "both" chat display modes - neither did
       anything beyond what "overlay" already does ("standalone" was never implemented past a stub,
       "both" behaved identically to "overlay"). The "Chat display mode" setting is now a single
       "Show chat overlay while playing" toggle, defaulting on. If you had "standalone" selected
       (previously no chat during playback), you'll now see the chat overlay by default - turn the
       new toggle off in Settings if you don't want that.
-      v0.19.0: Version number and release date now shown in the top-left corner of the main
+      v0.19.0 (2026-08-22): Version number and release date now shown in the top-left corner of the main
       window, on every screen.
-      v0.18.0: Variable-size chat overlay is now on by default for EventSub chat (still off for
+      v0.18.0 (2026-08-22): Variable-size chat overlay is now on by default for EventSub chat (still off for
       IRC chat, unchanged). Also fixed two bugs found during review: VariableChatOverlay's 9-line
       message cap wasn't actually being applied (could produce oversized message blocks for very
       long messages), and playback could silently fail to start at all if chat-overlay setup threw
       partway through - both now fixed, with a fallback so the stream always plays.
-      v0.17.3: Live re-test of v0.17.2 found the remaining garbling wasn't a sizing issue at all -
+      v0.17.3 (2026-08-22): Live re-test of v0.17.2 found the remaining garbling wasn't a sizing issue at all -
       it always appeared at whatever message currently sat at the column's top edge, with content
       bleeding in from an already-evicted message. Root cause: a burst of messages arriving in one
       throttled tick could get a control added and then immediately removed again within that same
@@ -152,32 +153,32 @@
       taken effect - leaving an orphaned control behind. Restructured chat rendering to compute
       eviction before creating any new controls, so a message that would be evicted immediately is
       now never materialized as a control at all.
-      v0.17.2: Live re-test of v0.17.1's fix on kodi.local found the overlap was reduced but not
+      v0.17.2 (2026-08-22): Live re-test of v0.17.1's fix on kodi.local found the overlap was reduced but not
       eliminated - a remaining ~1-line-tall graze specifically at block-to-block boundaries
       (previous message's last line vs the next message's username), not within a message's own
       wrapped lines. Increased _BLOCK_MARGIN (10px -&gt; 34px), the constant meant to absorb exactly
       this kind of gap, and re-verified live.
-      v0.17.1: Fixed the new variable-size chat overlay (v0.17.0) rendering with overlapping,
+      v0.17.1 (2026-08-22): Fixed the new variable-size chat overlay (v0.17.0) rendering with overlapping,
       garbled text on some Kodi builds/platforms - live testing found real text rendering taller
       than expected on at least one device, and because each message's position is computed from
       the height of the messages above it, that error compounded across the handful of messages
       on screen at once. Padded the per-line/per-row height constants with a large safety margin
       to absorb this kind of cross-build variance.
-      v0.17.0: New "Variable-size chat overlay" setting (Settings &gt; General, EventSub only) -
+      v0.17.0 (2026-08-22): New "Variable-size chat overlay" setting (Settings &gt; General, EventSub only) -
       sizes each chat overlay message's box to its actual length instead of always reserving
       space for the maximum 5-line message. Off by default; the existing fixed-box overlay
       stays the default for both chat engines.
-      v0.16.5: Chat overlay message box was too short for the 5-line message cap - a 4th or 5th
+      v0.16.5 (2026-08-22): Chat overlay message box was too short for the 5-line message cap - a 4th or 5th
       wrapped line spilled past the label's bottom edge into the emote-icon row below it. Grew the
       message box and pushed the per-item row layout (and emote icons) down to fit all 5 lines
       cleanly.
-      v0.16.4: Fixed chat overlay message text still rendering with a blank line above it on some
+      v0.16.4 (2026-08-22): Fixed chat overlay message text still rendering with a blank line above it on some
       Kodi builds even after v0.16.3 - the message label had no explicit vertical alignment, so a
       short single-line message could render bottom/center-anchored in its box on those builds.
       Now pinned to the top of the box explicitly.
-      v0.16.3: Fixed chat overlay messages sometimes rendering with a stray blank line above the
+      v0.16.3 (2026-08-22): Fixed chat overlay messages sometimes rendering with a stray blank line above the
       text - the skin's wrapmultiline flag conflicted with the code's own manual line-wrapping.
-      v0.16.0: New "Chat engine" setting (Settings &gt; General) - choose between the existing
+      v0.16.0 (2026-08-18): New "Chat engine" setting (Settings &gt; General) - choose between the existing
       anonymous IRC chat (default, no login needed) and Twitch's officially-supported EventSub
       chat API (requires login; available on Live Streams and Discover tabs only). EventSub falls
       back to IRC automatically if the channel's id can't be resolved. If the EventSub subscription
@@ -185,76 +186,76 @@
       keeps retrying - use the "Log in again" menu entry to refresh your login. Search results
       don't support EventSub (unauthenticated feature) - chat won't be shown when EventSub is
       selected for Search playback.
-      v0.15.2: Fixed chat overlay messages getting cut off mid-word - long messages now wrap
+      v0.15.2 (2026-08-14): Fixed chat overlay messages getting cut off mid-word - long messages now wrap
       across lines instead of being cut off at the label's width.
-      v0.15.1: No functional change - re-deploy marker for kodi.local install.
-      v0.15.0: New landing Menu screen for navigating between Live Streams, Discover, and Search.
+      v0.15.1 (2026-08-14): No functional change - re-deploy marker for kodi.local install.
+      v0.15.0 (2026-08-13): New landing Menu screen for navigating between Live Streams, Discover, and Search.
       Rebuilt the whole UI on a single persistent window with toggle-able view groups instead of
       constructing a new Kodi window per screen - this eliminates the Kodi window-activation
       revert bug for good (Discover, Search, and re-login all previously could hit it; now
       structurally impossible, not just less likely).
-      v0.14.1: Fixed Search crashing on open (AttributeError in onInit) - the window would flash
+      v0.14.1 (2026-08-13): Fixed Search crashing on open (AttributeError in onInit) - the window would flash
       open then immediately bounce back to Home. Known issue: even fixed, Search can still hit the
       pre-existing Kodi window-activation revert bug in some cases, same as Discover/re-login -
       tracked separately.
-      v0.14.0: Added an addon icon - shows in Kodi's addon browser and Add-ons list instead of
+      v0.14.0 (2026-08-13): Added an addon icon - shows in Kodi's addon browser and Add-ons list instead of
       the generic script placeholder.
-      v0.13.1: Updated window tests to match the new quit-confirmation behavior introduced in v0.13.0.
-      v0.13.0: Added a quit confirmation prompt when exiting the addon to prevent accidental closures.
-      v0.12.0: "Log in again" on Home is now always visible (was error-only) - use it to
+      v0.13.1 (2026-08-13): Updated window tests to match the new quit-confirmation behavior introduced in v0.13.0.
+      v0.13.0 (2026-08-13): Added a quit confirmation prompt when exiting the addon to prevent accidental closures.
+      v0.12.0 (2026-08-12): "Log in again" on Home is now always visible (was error-only) - use it to
       re-authorize/switch accounts on demand, e.g. after using the same account on two devices.
       Website Token field is no longer masked in Settings. Shortened the Website Token help text
       so it renders fully on TV displays instead of getting clipped. Known issue: re-login from
       Home can hit a pre-existing Kodi window-activation bug and silently stay on Home instead of
       opening the login screen - tracked separately, not new in this release.
-      v0.11.1: Fixed the Website Token setting (for ad-free/subscriber-perk playback) never
+      v0.11.1 (2026-08-12): Fixed the Website Token setting (for ad-free/subscriber-perk playback) never
       appearing in Settings &gt; General - an empty default value made Kodi silently drop it from
       the settings dialog. Also fixed the same bug for an internal setting. Both now show up and
       work correctly.
-      v0.11.0: New optional "Show offline channels on Home" setting (Settings &gt; General, off by default) -
+      v0.11.0 (2026-08-12): New optional "Show offline channels on Home" setting (Settings &gt; General, off by default) -
       turn it on to bring offline followed channels back into Home's list, after the live ones.
-      v0.10.0: Chat now shows automatically as a right-side overlay while a stream plays (Settings &gt; General &gt; Chat display mode, "overlay" or "both"). Connects anonymously to Twitch IRC, auto-reconnects on drops, and closes itself when the stream stops, ends, or errors out. Standalone full-screen chat and the picture-in-picture windowed-video layout are still to come.
-      v0.9.0: Fixed window flicker and revert bug when opening Discover screen by adding a safe control delay and using xbmc.sleep(). Improved error handling for missing UI controls across Home and Discover windows.
-      v0.8.1: Fixed the real cause of "stuck on login/gets a new code every time" - Home's skin
+      v0.10.0 (2026-08-12): Chat now shows automatically as a right-side overlay while a stream plays (Settings &gt; General &gt; Chat display mode, "overlay" or "both"). Connects anonymously to Twitch IRC, auto-reconnects on drops, and closes itself when the stream stops, ends, or errors out. Standalone full-screen chat and the picture-in-picture windowed-video layout are still to come.
+      v0.9.0 (2026-08-12): Fixed window flicker and revert bug when opening Discover screen by adding a safe control delay and using xbmc.sleep(). Improved error handling for missing UI controls across Home and Discover windows.
+      v0.8.1 (2026-08-12): Fixed the real cause of "stuck on login/gets a new code every time" - Home's skin
       defaultcontrol targeted the (empty until data loads) channel list, which made Kodi's window
       manager silently abort activating Home and revert to Login whenever Home wasn't the very
       first window shown in a session. No script-side fix could catch this since it happens before
       Python even runs. Same root cause and fix as Discover's earlier "flashes then reverts" bug.
-      v0.8.0: Discover's search can now search by game/category, not just channel name - a toggle
+      v0.8.0 (2026-08-12): Discover's search can now search by game/category, not just channel name - a toggle
       button next to the search box switches modes ("Searching: Channels" / "Searching: Games").
       Searching a game (e.g. "warships") finds the best-matching category and lists its live
       streams.
-      v0.7.2: Fixed streams continuing to play in the background after pressing Back - Kodi's own
+      v0.7.2 (2026-08-12): Fixed streams continuing to play in the background after pressing Back - Kodi's own
       fullscreen-video Back only exits the fullscreen view, it doesn't stop playback. Home and
       Discover's Back now stop an active stream instead of closing the whole addon out from under it.
-      v0.7.1: Added a Settings button on Home - opens Kodi's native addon settings dialog directly
+      v0.7.1 (2026-08-12): Added a Settings button on Home - opens Kodi's native addon settings dialog directly
       (no more digging through Add-ons browser context menus), and reloads Home afterward so a
       newly pasted Website Token takes effect immediately.
-      v0.7.0: New optional "Website Token" setting (Settings &gt; General) - paste your twitch.tv
+      v0.7.0 (2026-08-12): New optional "Website Token" setting (Settings &gt; General) - paste your twitch.tv
       browser session's auth-token cookie to unlock ad-free/subscriber-perk playback and get the
       followed-games filter row actually working (it silently 401'd before, same root cause as the
       playback bug). Leave it empty to keep the default anonymous/public behavior.
-      v0.6.5: Fixed playback always failing with "session expired": Twitch's internal GraphQL API
+      v0.6.5 (2026-08-12): Fixed playback always failing with "session expired": Twitch's internal GraphQL API
       permanently rejects any real user OAuth token from a non-Twitch client_id, so no refresh
       could ever fix it. Playback token requests are now made anonymously, which Twitch serves
       fine for public live streams.
-      v0.6.4: Fixed Login screen restarting the device-code flow (new code shown) after a
+      v0.6.4 (2026-08-12): Fixed Login screen restarting the device-code flow (new code shown) after a
       successful login, when Kodi re-fires the window's init on an already-completed login.
-      v0.6.3: Token refresh failures are now logged with the actual reason (network error, HTTP
+      v0.6.3 (2026-08-12): Token refresh failures are now logged with the actual reason (network error, HTTP
       status, bad response body) instead of silently forcing a re-login with no diagnostic trail.
-      v0.6.2: Fixed Home's focus landing on a random button (Relogin/Discover) right after load - the
+      v0.6.2 (2026-08-12): Fixed Home's focus landing on a random button (Relogin/Discover) right after load - the
       skin's defaultcontrol targeted the channel list before it had items, so Kodi's focus fallback
       could pick a button; a stray keypress there would silently trigger unwanted navigation.
-      v0.6.1: Fixed login screen ending the whole script on successful login instead of continuing
+      v0.6.1 (2026-08-12): Fixed login screen ending the whole script on successful login instead of continuing
       to Home - required reopening the addon manually every time the session expired.
-      v0.6.0: Real stream playback via inputstream.adaptive; clicking a live channel in Home or
+      v0.6.0 (2026-08-12): Real stream playback via inputstream.adaptive; clicking a live channel in Home or
       Discover now plays it.
-      v0.5.0: Discover screen (browse by game, channel search); fixed window navigation killing
+      v0.5.0 (2026-08-11): Discover screen (browse by game, channel search); fixed window navigation killing
       the script; fixed unreachable skin controls.
-      v0.4.0: followed-games filter row on Home.
-      v0.3.0: Home screen (followed channels, thumbnails, token refresh).
-      v0.2.0: Twitch device-code login.
-      v0.1.0: initial addon scaffold.
+      v0.4.0 (2026-08-11): followed-games filter row on Home.
+      v0.3.0 (2026-08-11): Home screen (followed channels, thumbnails, token refresh).
+      v0.2.0 (2026-08-11): Twitch device-code login.
+      v0.1.0 (2026-08-11): initial addon scaffold.
     </news>
     </extension>
   </addon>
