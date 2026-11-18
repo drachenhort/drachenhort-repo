@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.31.3" provider-name="drachenhort">
+  <addon id="script.twitch.center" name="SIGMA Streaming Hub" version="0.32.0" provider-name="drachenhort">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
       <import addon="script.module.requests" version="2.22.0" />
@@ -22,6 +22,7 @@
         <icon>icon.png</icon>
       </assets>
       <news>
+      v0.32.0 (2026-11-18): Browse the top 100 Twitch categories as a box-art grid from Discover.
       v0.31.3 (2026-11-03): Every entry in this changelog now shows its release date.
       v0.31.2 (2026-11-03): A stream that won't start now shows why (timeout, Twitch error) instead of only "Playback failed".
       v0.31.1 (2026-10-08): Live Streams refresh shows which step is loading, e.g. "Refreshing: live status (2/4)".
